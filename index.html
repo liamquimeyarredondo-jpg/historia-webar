@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Historia aumentada</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <script src="https://unpkg.com/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+</head>
+<body>
+  <main id="app">
+    <section id="intro" class="panel">
+      <p class="eyebrow">EXPERIENCIA DE REALIDAD AUMENTADA</p>
+      <h1>Una historia sobre el afiche</h1>
+      <p>Permití el acceso a la cámara y apuntá al afiche para descubrir la historia.</p>
+      <p class="small">Este prototipo necesita que agregues tu imagen de reconocimiento antes de publicarlo.</p>
+    </section>
+
+    <section id="camera-ui" aria-live="polite">
+      <div id="status">Preparando cámara…</div>
+      <div id="story-card" class="story-card hidden">
+        <p id="story-count">01 / 03</p>
+        <p id="story-text">La historia empieza aquí.</p>
+        <div class="controls">
+          <button id="prev" type="button">Anterior</button>
+          <button id="next" type="button">Continuar →</button>
+        </div>
+      </div>
+    </section>
+
+    <a-scene
+      mindar-image="imageTargetSrc: ./targets/poster.mind; autoStart: true; uiLoading: no; uiScanning: no; uiError: no;"
+      embedded
+      color-space="sRGB"
+      renderer="colorManagement: true, physicallyCorrectLights: true"
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: false">
+      <a-assets>
+        <img id="scene-illustration" src="./assets/scene-01.svg" crossorigin="anonymous">
+      </a-assets>
+
+      <!-- Todo lo que esté dentro de este ancla aparece cuando MindAR reconoce el afiche. -->
+      <a-entity id="poster-target" mindar-image-target="targetIndex: 0">
+        <!-- Ilustración flotante: cambiá posición, ancho y alto según tu composición. -->
+        <a-image id="story-image" src="#scene-illustration"
+          position="0.34 0.05 0.04" width="0.48" height="0.48"
+          material="transparent: true; alphaTest: 0.05"
+          animation="property: position; from: 0.34 0.02 0.04; to: 0.34 0.09 0.04; dur: 1800; dir: alternate; loop: true; easing: easeInOutSine">
+        </a-image>
+        <!-- Texto 3D colocado sobre el afiche. Podés moverlo en el eje X/Y. -->
+        <a-text id="story-label" value="La historia empieza aquí."
+          position="-0.42 -0.27 0.05" width="0.9"
+          color="#ffffff" align="left" wrap-count="34"
+          side="double" baseline="center">
+        </a-text>
+      </a-entity>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+    </a-scene>
+  </main>
+  <script src="./app.js"></script>
+</body>
+</html>
